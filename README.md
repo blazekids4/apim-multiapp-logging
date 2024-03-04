@@ -6,6 +6,12 @@ Also included is the main APIM policy and the accompanying policy fragments.
 
 Enjoy :)
 
+## The Event Hub Streaming Data
+![image](https://github.com/blazekids4/apim-multiapp-logging/assets/45666337/be37da04-4dbb-474f-9f56-1ab302f2fcf9)
+
+## The APIM Logging Data
+![image](https://github.com/blazekids4/apim-multiapp-logging/assets/45666337/88045009-93c8-4a24-8e19-875ae05d2eed)
+
 ## API Settings:  General, Subscription, Security
 ![image](https://github.com/blazekids4/apim-multiapp-logging/assets/45666337/f68060fc-21ee-447c-82bc-0b85a17d8c98)
 
