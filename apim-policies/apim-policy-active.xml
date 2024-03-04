@@ -1,0 +1,40 @@
+<policies>
+    <inbound>
+        <base />
+        <!-- Getting the main variable where we keep the list of backends -->
+        <cache-lookup-value key="listBackends" variable-name="listBackends" />
+        <!-- If we can't find the variable, initialize it -->
+        <include-fragment fragment-id="inbound-choose-backend" />
+        <authentication-managed-identity resource="https://cognitiveservices.azure.com" output-token-variable-name="msi-access-token" ignore-error="false" />
+        <set-header name="Authorization" exists-action="override">
+            <value>@("Bearer " + (string)context.Variables["msi-access-token"])</value>
+        </set-header>
+        <set-variable name="backendIndex" value="-1" />
+        <set-variable name="remainingBackends" value="1" />
+        <include-fragment fragment-id="inbound-logger" />
+    </inbound>
+    <backend>
+        <retry condition="@(context.Response != null && (context.Response.StatusCode == 429 || context.Response.StatusCode >= 500) && ((Int32)context.Variables["remainingBackends"]) > 0)" count="50" interval="0">
+            <!-- Before picking the backend, let's verify if there is any that should be set to not throttling anymore -->
+            <include-fragment fragment-id="backend-set-variable-list" />
+            <cache-store-value key="listBackends" value="@((JArray)context.Variables["listBackends"])" duration="60" />
+            <!-- This is the main logic to pick the backend to be used -->
+            <include-fragment fragment-id="backend-set-variable-index" />
+            <set-variable name="backendUrl" value="@(((JObject)((JArray)context.Variables["listBackends"])[(Int32)context.Variables["backendIndex"]]).Value<string>("url") + "/openai")" />
+            <set-backend-service base-url="@((string)context.Variables["backendUrl"])" />
+            <forward-request buffer-request-body="true" />
+            <include-fragment fragment-id="backend-choose" />
+        </retry>
+    </backend>
+    <outbound>
+        <base />
+        <!-- This will return the used backend URL in the HTTP header response. Remove it if you don't want to expose this data -->
+        <set-header name="x-openai-backendurl" exists-action="override">
+            <value>@(context.Variables.GetValueOrDefault<string>("backendUrl", "none"))</value>
+        </set-header>
+        <include-fragment fragment-id="outbound-logger" />
+    </outbound>
+    <on-error>
+        <base />
+    </on-error>
+</policies>

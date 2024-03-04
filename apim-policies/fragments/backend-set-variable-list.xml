@@ -1,0 +1,18 @@
+<fragment>
+	<set-variable name="listBackends" value="@{
+                JArray backends = (JArray)context.Variables["listBackends"];
+
+                for (int i = 0; i < backends.Count; i++)
+                {
+                    JObject backend = (JObject)backends[i];
+
+                    if (backend.Value<bool>("isThrottling") && DateTime.Now >= backend.Value<DateTime>("retryAfter"))
+                    {
+                        backend["isThrottling"] = false;
+                        backend["retryAfter"] = DateTime.MinValue;
+                    }
+                }
+
+                return backends; 
+            }" />
+</fragment>

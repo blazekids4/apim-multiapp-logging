@@ -1,0 +1,30 @@
+<fragment>
+	<choose>
+		<when condition="@(context.Variables.ContainsKey("listBackends") == false)">
+			<set-variable name="listBackends" value="@{
+                    // -------------------------------------------------
+                    // ------- Explanation of backend properties -------
+                    // -------------------------------------------------
+                    // "url":          Your backend url
+                    // "priority":     Lower value means higher priority over other backends. 
+                    //                 If you have more one or more Priority 1 backends, they will always be used instead
+                    //                 of Priority 2 or higher. Higher values backends will only be used if your lower values (top priority) are all throttling.
+                    // "isThrottling": Indicates if this endpoint is returning 429 (Too many requests) currently
+                    // "retryAfter":   We use it to know when to mark this endpoint as healthy again after we received a 429 response
+
+                    JArray backends = new JArray();
+                    backends.Add(new JObject()
+                    {
+                        { "url", "https://aoai-apim-pattern-rcd.openai.azure.com" },
+                        { "priority", 1},
+                        { "isThrottling", false }, 
+                        { "retryAfter", DateTime.MinValue } 
+                    });
+
+                    return backends;   
+                }" />
+			<!-- And store the variable into cache again -->
+			<cache-store-value key="listBackends" value="@((JArray)context.Variables["listBackends"])" duration="60" />
+		</when>
+	</choose>
+</fragment>

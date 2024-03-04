@@ -1,0 +1,22 @@
+<fragment>
+    <log-to-eventhub logger-id="JMLAppInnoAILogger" partition-id="0">@{
+        var requestBody = context.Request.Body?.As<JObject>(true);
+
+        string model = requestBody["model"]?.ToString();
+        string messages = requestBody["messages"]?.ToString();
+        string prompt = requestBody["prompt"]?.ToString();
+        string operation = context.Operation.Id;
+        string results = requestBody["results"]?.ToString();
+
+        return new JObject(
+            new JProperty("reqURL", context.Request.Url.ToString()),
+            new JProperty("subscriptionId", context.Subscription?.Key),
+            new JProperty("model", model),
+            new JProperty("messages", messages),
+            new JProperty("Application-Name", context.Request.Headers.GetValueOrDefault("Application-Name", string.Empty)),
+            new JProperty("Application-Number", context.Request.Headers.GetValueOrDefault("Application-Number", string.Empty)),
+            new JProperty("Business-Unit", context.Request.Headers.GetValueOrDefault("Business-Unit", string.Empty)),
+            new JProperty("timeStamp", DateTime.UtcNow.ToString())
+        ).ToString(); 
+    }</log-to-eventhub>
+</fragment>

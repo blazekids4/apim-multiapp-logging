@@ -1,0 +1,45 @@
+<fragment>
+	<set-variable name="backendIndex" value="@{
+                JArray backends = (JArray)context.Variables["listBackends"];
+
+                int selectedPriority = Int32.MaxValue;
+                List<int> availableBackends = new List<int>();
+
+                for (int i = 0; i < backends.Count; i++)
+                {
+                    JObject backend = (JObject)backends[i];
+
+                    if (!backend.Value<bool>("isThrottling"))
+                    {
+                        int backendPriority = backend.Value<int>("priority");
+
+                        if (backendPriority < selectedPriority)
+                        {
+                            selectedPriority = backendPriority;
+                            availableBackends.Clear();
+                            availableBackends.Add(i);
+                        } 
+                        else if (backendPriority == selectedPriority)
+                        {
+                            availableBackends.Add(i);
+                        }
+                    }
+                }
+
+                if (availableBackends.Count == 1)
+                {
+                    return availableBackends[0];
+                }
+            
+                if (availableBackends.Count > 0)
+                {
+                    //Returns a random backend from the list if we have more than one available with the same priority
+                    return availableBackends[new Random().Next(0, availableBackends.Count)];
+                }
+                else
+                {
+                    //If there are no available backends, the request will be sent to the first one
+                    return 0;    
+                }
+                }" />
+</fragment>
