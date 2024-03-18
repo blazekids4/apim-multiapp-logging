@@ -9,7 +9,7 @@ client = AzureOpenAI(
     api_key=os.getenv("AZURE_APIM_API_KEY"),
     api_version="2023-12-01-preview",
     default_headers={
-    "Application-Name": "app two",  # Add "app two" to the default headers
+    "Application-Name": "app two",  
     "Application-Number": "2",
     "Business-Unit": "Marketing",
     }

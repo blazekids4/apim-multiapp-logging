@@ -1,0 +1,26 @@
+# .gitignore
+__pycache__/
+*.py[cod]
+*.log
+*.csv
+*.dat
+*.out
+*.pid
+*.gz
+
+# Directories
+venv/
+dist/
+build/
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Environment variables
+.env
