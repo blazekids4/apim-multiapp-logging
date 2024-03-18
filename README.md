@@ -40,3 +40,12 @@ Enjoy :)
 ## Access to Azure OpenAI Granted to APIM Instance
 ![image](https://github.com/blazekids4/apim-multiapp-logging/assets/45666337/402ee6c2-6b01-44ff-918d-57eecadfb9df)
 
+## Some additional resources:
+- Smart load balancing for OpenAI endpoints and Azure API Management:  https://github.com/andredewes/apim-aoai-smart-loadbalancing
+- Azure OpenAI APIM Enterprise Logging: https://github.com/andredewes/apim-aoai-smart-loadbalancing
+- Open AI Cost Gateway Pattern:  https://github.com/ThePreston/Custom-Rate-Limiter-API
+- Azure OpenAI Model Pricing (Pay-as-you-go):  https://azure.microsoft.com/en-us/pricing/details/cognitive-services/openai-service/#pricing
+- Azure OpenAI Service quotas and limits:  https://learn.microsoft.com/en-us/azure/ai-services/openai/quotas-limits
+
+  
+
