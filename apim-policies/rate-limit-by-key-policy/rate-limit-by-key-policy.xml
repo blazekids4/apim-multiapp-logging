@@ -1,0 +1,10 @@
+<rate-limit-by-key calls="number"
+                   renewal-period="seconds"
+                   increment-condition="condition"
+                   increment-count="number"
+                   counter-key="key value" 
+                   retry-after-header-name="custom header name, replaces default 'Retry-After'" 
+                   retry-after-variable-name="policy expression variable name"
+                   remaining-calls-header-name="header name"  
+                   remaining-calls-variable-name="policy expression variable name"
+                   total-calls-header-name="header name"/>
